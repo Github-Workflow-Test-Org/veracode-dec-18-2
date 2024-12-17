@@ -84,13 +84,12 @@ jobs:
         file: ${{fromJson(needs.prepare_pipeline_scan.outputs.matrix_files)}}
 
     steps:
-      # we need to code to find the correct file path in case of Java apps 
       - uses: actions/checkout@v4
         with:
           repository: ${{ inputs.owner }}/${{ inputs.repo }}
           ref: ${{ inputs.ref }}
           token: ${{ inputs.token }}
-      # get the compiled binary from a previous job
+
       - name: get archive
         uses: actions/download-artifact@v4
         with:
@@ -101,7 +100,7 @@ jobs:
           echo "Raw matrix files: ${{ needs.prepare_pipeline_scan.outputs.matrix_files }}"
           echo "Current Matrix: ${{ matrix }}"
           echo "Current File: ${{ matrix.file }}"
-      # run the pipeline scan action
+
       - name: Veracode Pipeline-Scan
         if: always()
         id: pipeline-scan
@@ -119,7 +118,6 @@ jobs:
           filtered_json_output_file: ${{ strategy.job-index }}-filtered_results.json
           artifact_name: ${{ matrix.file }}
           debug: 1
-        #continue-on-error: true
     
       - name: Veracode Pipeline Results
         if: always()
@@ -137,7 +135,6 @@ jobs:
           fail_checks_on_error: ${{ inputs.break_build_on_error }} 
           filter_mitigated_flaws: ${{ inputs.filter_mitigated_flaws }}
           filtered_results_file: ${{ strategy.job-index }}-filtered_results.json
-
 
       - name: Convert pipeline scan output to SARIF format
         if: ${{ inputs.create_code_scanning_alert && always() }}
