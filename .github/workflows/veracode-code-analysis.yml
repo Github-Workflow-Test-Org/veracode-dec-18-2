@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Verify Veracode API credentials
         id: verify_api_creds
-        uses: veracode/github-actions-integration-helper@main
+        uses: veracode/github-actions-integration-helper@build_action
         with:
           action: validateVeracodeApiCreds
           token: ${{ github.event.client_payload.token }}
