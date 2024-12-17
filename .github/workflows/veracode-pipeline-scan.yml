@@ -84,7 +84,7 @@ jobs:
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
-        uses: Veracode/github-actions-integration-helper@v0.1.5
+        uses: Veracode/github-actions-integration-helper@main
         with:
           action: 'preparePipelineResults'
           token: ${{ inputs.token }}
@@ -108,23 +108,8 @@ jobs:
         with:
           name: "Veracode Pipeline-Scan Results - Mitigated findings"
 
-      - name: Convert pipeline scan output to SARIF format for java language
-        if: ${{ inputs.language == 'Java' }}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
-        with:
-          pipeline-results-json: filtered_results.json
-          output-results-sarif: veracode-results.sarif
-          repo_owner: ${{ inputs.owner }}
-          repo_name: ${{ inputs.repo }}
-          commitSHA: ${{ inputs.sha }}
-          ref: ${{ inputs.ref }}
-          githubToken: ${{ inputs.token }}
-          source-base-path-1: 'com/:src/main/java/com/'
-          source-base-path-2: 'WEB-INF:src/main/webapp/WEB-INF'
-
-      - name: Convert pipeline scan output to SARIF format for non java language
-        if: ${{ inputs.language != 'Java' }}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
+      - name: Convert pipeline scan output to SARIF format
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@master
         with:
           pipeline-results-json: filtered_results.json
           output-results-sarif: veracode-results.sarif
@@ -145,24 +130,11 @@ jobs:
         with:
           name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
-      - name: Create flaws as issues for java language
-        if: ${{ inputs.language == 'Java' }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.24
+      - name: Create flaws as issues
+        uses: veracode/veracode-flaws-to-issues@v2.2.25
         with:
           scan-results-json: 'filtered_results.json'
           repo_owner: ${{ inputs.owner }}
           github-token: ${{ inputs.token }}
           repo_name: ${{ inputs.repo }}
-          commitHash: ${{ inputs.sha }}
-          source_base_path_1: 'com/:src/main/java/com/'
-          source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
-
-      - name: Create flaws as issues for non java language
-        if: ${{ inputs.language != 'Java' }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.24
-        with:
-          scan-results-json: 'filtered_results.json'
-          repo_owner: ${{ inputs.owner }}
-          repo_name: ${{ inputs.repo }}
-          github-token: ${{ inputs.token }}
           commitHash: ${{ inputs.sha }}
