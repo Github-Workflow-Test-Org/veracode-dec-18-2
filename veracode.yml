@@ -23,7 +23,6 @@ veracode_static_scan:
     trigger: true
     commands:
       - Veracode Static Scan
-  analysis_branch: ENTER BRANCH NAME HERE
 veracode_sca_scan:
   push:
     trigger: true
