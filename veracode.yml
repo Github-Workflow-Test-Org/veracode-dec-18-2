@@ -18,7 +18,7 @@ veracode_static_scan:
   error_message: >-
     Veracode static scan faced a problem. Please contact your Veracode
     administrator for more information.
-  policy: Veracode Recommended Medium +CA
+  policy: Veracode Recommended Medium
   create_code_scanning_alert: true
   create_issue: true
   issues:
