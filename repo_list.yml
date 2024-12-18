@@ -1,5 +1,2 @@
-include_repos:
-  - '*'
-exclude_repos:
-  - example-javascript
-  - vulnado
+include_repos: vulnado
+exclude_repos: '*'
