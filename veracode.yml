@@ -23,6 +23,7 @@ veracode_static_scan:
     trigger: false
     commands:
       - Veracode Static Scan
+  analysis_branch: ENTER BRANCH NAME HERE
 veracode_sca_scan:
   push:
     trigger: false
@@ -31,7 +32,7 @@ veracode_sca_scan:
     branches_to_exclude:
       - branch-1
   pull_request:
-    trigger: true
+    trigger: false
     action:
       - reopened
     target_branch:
